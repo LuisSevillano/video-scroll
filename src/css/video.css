@@ -1,0 +1,10 @@
+#g-scroll-vid {
+  video {
+    width: 100%;
+    min-height: 100%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
