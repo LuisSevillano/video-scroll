@@ -3,3 +3,4 @@ dist
 npm-debug.log
 .Rhistory
 *.jpg
+src/js/modules/bl.js
