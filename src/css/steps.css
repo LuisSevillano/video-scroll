@@ -1,26 +1,38 @@
 #scroll-steps {
+  font-family: sans-serif;
   position: relative;
   z-index: 10;
   .scroll-step {
-    margin: 0 auto;
+    padding: 15px;
+    background: rgb(255, 255, 255, 1);
+    border-radius: 2px;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.33);
+    &.g-ghost-step {
+      opacity: 0;
+    }
+    &.scroll-step-center {
+      margin: 0 auto;
+    }
+    &.scroll-step-left {
+    }
+    &.scroll-step-right {
+    }
     @media (min-width: 600px) {
       max-width: none;
-      width: 500px;
+      width: 300px;
     }
     &:last-child {
       margin-bottom: 0;
     }
 
     .step-content {
-      background: rgb(255, 255, 255, 0.9);
       @media (min-width: 600px) {
-        padding: 15px;
+        /* padding: 15px; */
       }
-      border-radius: 2px;
-      box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.33);
+
       pointer-events: none;
       display: block;
-      padding: 10px;
+      /* padding: 10px; */
       p {
         /* background: rgb(255, 255, 255, 0.1); */
         text-align: left;

@@ -10,7 +10,9 @@
   --b-radius: 3px;
   --button-radius: 2px;
 }
-
+body {
+    background-color: #000;
+}
 #g-scroll-vid {
 
   /* Box sizing rules */
