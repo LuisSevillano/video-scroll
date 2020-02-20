@@ -3,7 +3,7 @@
 /* eslint func-names: ["error", "never"] */
 /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: true}}] */
 import css from "../css/main.css";
-import VideoScroll from "./modules/VideoScroll";
+import VideoScroll from "./modules/VideoScroll_jq";
 
 new VideoScroll({
   // stepSelector: ".scroll-step"
