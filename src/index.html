@@ -3,41 +3,46 @@
 
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title></title>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+
 </head>
 
 <body>
   <div id="g-scroll-vid">
     <div id="g-fixed">
-      <video id="g-vid" playsinline="" muted="" preload="auto" x-webkit-airplay="allow" data-mp4="tarragona2_640.mp4" data-webm="tarragona2_640.webm" data-mp4_mobile="tarragona2_640.mp4" data-webm_mobile="tarragona2_640.mp4" class="g-vid-mobile">
+      <video id="g-vid" playsinline="" muted="" preload="auto" x-webkit-airplay="allow" data-mp4="A_Coruna_City_Tour_with_Google_Earth_Studio.mp4" data-webm="A_Coruna_City_Tour_with_Google_Earth_Studio.webm" data-mp4_mobile="A_Coruna_City_Tour_with_Google_Earth_Studio_mobile.mp4"
+        data-mp4_med="A_Coruna_City_Tour_with_Google_Earth_Studio_tablet.mp4" data-webm_mobile="A_Coruna_City_Tour_with_Google_Earth_Studio.mp4" class="g-vid-mobile">
       </video>
     </div>
     <div id="scroll-steps" class='scroll-steps'>
       <div class="scroll-step g-ghost-step"></div>
 
-      <div class="scroll-step g-first" data-step="0" data-start="0" data-end="4">
+      <div class="scroll-step scroll-step-left g-first" data-step="0" data-start="0" data-end="10">
         <p class="step-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-          commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum..</p>
+          commodo consequat.</p>
       </div>
-      <div class="scroll-step " data-step="1" data-start="4" data-end="7.5">
+      <div class="scroll-step scroll-step-right " data-step="1" data-start="10" data-end="20">
         <p class="step-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-          commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          commodo consequat</p>
       </div>
-      <div class="scroll-step " data-step="2" data-start="7.5" data-end="9.8">
+      <div class="scroll-step scroll-step-left " data-step="2" data-start="20" data-end="30">
         <p class="step-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-          commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          commodo consequat</p>
       </div>
-      <div class="scroll-step " data-step="3" data-start="9.8" data-end="11">
+      <div class="scroll-step scroll-step-left " data-step="3" data-start="30" data-end="40">
         <p class="step-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-          commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          commodo consequat</p>
       </div>
-      <div class="scroll-step " data-step="4" data-start="11" data-end="15">
+      <div class="scroll-step scroll-step-left " data-step="4" data-start="40" data-end="50">
         <p class="step-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-          commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          commodo consequat</p>
       </div>
-      <div class="scroll-step g-last" data-step="5" data-start="15" data-end="17">
+      <div class="scroll-step scroll-step-left" data-step="5" data-start="50" data-end="60">
         <p class="step-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-          commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          commodo consequat</p>
       </div>
 
       <div class="scroll-step g-last g-ghost-step"></div>
