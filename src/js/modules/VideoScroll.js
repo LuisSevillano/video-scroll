@@ -1,11 +1,12 @@
 export default class {
   constructor(options) {
     this.name = "VideoScroll";
+    this.el = document.querySelector("#g-scroll-vid");
+    this.vid = this.el.querySelector("#g-vid");
     this.top_offset = 0;
     this.width = window.innerWidth;
     this.height = window.innerHeight;
     this.scroll_trigger = this.height;
-    this.vid = document.getElementById("g-vid");
     this.endTime = 0;
     this.options = options;
     this.stepSelector = ".scroll-step";
@@ -15,18 +16,13 @@ export default class {
     console.log(this);
   }
 
-  setStepsHeight() {
-    document.querySelectorAll(this.stepSelector).forEach(el => {
-      el.style.marginBottom = `${window.innerHeight - this.top_offset}px`;
-    }, this);
-  }
-
   init() {
     this.steps = {
-      first_step_div: document.querySelector(".scroll-steps .g-first"),
-      last_step_div: document.querySelector(".scroll-steps .g-last"),
-      all: document.querySelectorAll(".scroll-steps")
+      first_step_div: this.el.querySelector(".scroll-steps .g-first"),
+      last_step_div: this.el.querySelector(".scroll-steps .g-last"),
+      all: this.el.querySelectorAll(".scroll-steps")
     };
+
     if (this.width > this.height) {
       if (this.height / this.width >= 0.65) {
         // portrait / mobile
@@ -40,6 +36,10 @@ export default class {
       this.loadVideo("mobile");
     }
 
+    this.vid.ontimeupdate = () => {
+      this.timeUpdate();
+    };
+
     this.setStepsHeight();
     window.addEventListener(
       "scroll",
@@ -47,10 +47,17 @@ export default class {
         const wScrollTop =
           (document.documentElement && document.documentElement.scrollTop) ||
           document.body.scrollTop;
+        console.log(wScrollTop);
         this.onScroll(wScrollTop);
       }.bind(this),
       false
     );
+  }
+
+  setStepsHeight() {
+    this.el.querySelectorAll(this.stepSelector).forEach(el => {
+      el.style.marginBottom = `${window.innerHeight - this.top_offset}px`;
+    }, this);
   }
 
   timeUpdate() {
@@ -65,26 +72,26 @@ export default class {
     this.timeUpdate();
   }
 
-  loadVideo(sz) {
+  loadVideo(size) {
     let vid_class;
     let vid_att = "";
 
-    if (sz == "mobile") {
+    if (size == "mobile") {
       vid_class = "g-vid-mobile";
       vid_att = "_mobile";
-    } else if (sz == "med") {
+    } else if (size == "med") {
       // vid_class = "g-vid-med";
       vid_class = "g-vid-mobile";
       vid_att = "_mobile";
       // d3.select("#g-fade").style("display","block").style("bottom",`${$("#g-vid").height()}px`)
-    } else if (sz == "desktop") {
+    } else if (size == "desktop") {
       vid_class = "g-vid-desktop";
     }
 
-    document.querySelector("#g-vid").classList.add(vid_class);
+    this.el.querySelector("#g-vid").classList.add(vid_class);
     const src_mp4 = document.createElement("source");
     const src_webm = document.createElement("source");
-    const gVid = document.querySelector("#g-vid");
+    const gVid = this.el.querySelector("#g-vid");
     src_mp4.setAttribute("src", gVid.getAttribute(`data-mp4${vid_att}`));
     src_webm.setAttribute("src", gVid.getAttribute(`data-webm${vid_att}`));
     this.vid.appendChild(src_mp4);
@@ -94,13 +101,11 @@ export default class {
 
   update(step_num, start_time, end_time, is_reverse) {
     if (step_num !== 0 && !step_num) {
-      // $(".g-step")
-      //   .removeClass("g-next")
-      //   .removeClass("g-prev")
-      //   .removeClass("g-active");
+      this.removeClassMany(this.steps.all, ["g-next", "g-prev", "g-active"]);
+
       if (is_reverse) {
-        vid.currentTime = 0;
-        vid.pause();
+        this.vid.currentTime = 0;
+        this.vid.pause();
         // d3.select("#g-spacer")
         //   .transition()
         //   .duration(250)
@@ -137,17 +142,28 @@ export default class {
   }
 
   addClass(el, className) {
+    // console.log("addClass");
     el.classList.add(className);
   }
 
   removeClass(el, className) {
+    // console.log("removeClass");
     el.classList.remove(className);
   }
 
   removeClassMany(elements, className) {
-    elements.forEach((el, i) => {
-      this.removeClass(el, className);
-    });
+    if (Array.isArray(className)) {
+      elements.forEach((el, i) => {
+        className.forEach(cName => {
+          this.removeClass(el, cName);
+        }, this);
+      }, this);
+    } else {
+      elements.forEach((el, i) => {
+        this.removeClass(el, className);
+      }, this);
+    }
+    // console.log("removeClassMany");
   }
 
   updatePrevNext(el) {
@@ -157,22 +173,26 @@ export default class {
     this.removeClass(el, "g-prev");
     this.removeClassMany(this.steps.all, "g-active");
 
-    this.addClass(el.nextSibling, "g-next");
-    this.removeClass(el.nextSibling, "g-active");
-    this.removeClass(el.nextSibling, "g-prev");
+    if (el.nextElementSibling) {
+      this.addClass(el.nextElementSibling, "g-next");
+      this.removeClass(el.nextElementSibling, "g-active");
+      this.removeClass(el.nextElementSibling, "g-prev");
+    }
     this.removeClassMany(this.steps.all, "g-next");
 
-    this.addClass(el.previousElementSibling, "g-next");
-    this.removeClass(el.previousElementSibling, "g-active");
-    this.removeClass(el.previousElementSibling, "g-prev");
+    if (el.previousElementSibling) {
+      this.addClass(el.previousElementSibling, "g-next");
+      this.removeClass(el.previousElementSibling, "g-active");
+      this.removeClass(el.previousElementSibling, "g-prev");
+    }
     this.removeClassMany(this.steps.all, "g-next");
   }
 
   onScroll(ypos) {
     const top_of_first_step_div =
       +this.getOffset(this.steps.first_step_div).top - ypos;
-    const nextEl = document.querySelector(".g-next");
-    const prevEl = document.querySelector(".g-prev");
+    const nextEl = this.el.querySelector(".g-next");
+    const prevEl = this.el.querySelector(".g-prev");
 
     const bottom_of_last_step_div =
       +this.getOffset(this.steps.last_step_div).top -
@@ -209,12 +229,13 @@ export default class {
       this.playStep(nextEl, false);
     }
 
-    if (bottom_of_prev && bottom_of_prev >= top_offset) {
+    if (bottom_of_prev && bottom_of_prev >= this.top_offset) {
       // console.log("prev has hit top");
       this.playStep(prevEl, true);
     }
   }
 
+  // extract from http://youmightnotneedjquery.com/
   getOffset(el) {
     const box = el.getBoundingClientRect();
 
