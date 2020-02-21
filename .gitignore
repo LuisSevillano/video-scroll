@@ -4,3 +4,4 @@ npm-debug.log
 .Rhistory
 *.jpg
 src/js/modules/bl.js
+src/js/modules/blocks.js
