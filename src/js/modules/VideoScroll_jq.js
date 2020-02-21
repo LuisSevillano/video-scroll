@@ -147,19 +147,19 @@ export default class {
       if (is_reverse) {
         this.vid.currentTime = 0;
         this.vid.pause();
-        d3.select("#g-spacer")
+        d3.select("#g-heading")
           .transition()
           .duration(250)
           .style("opacity", 1);
       } else {
-        // d3.select("#g-fixed")
-        //   .transition()
-        //   .duration(500)
-        //   .style("opacity", 0);
+        d3.select("#g-fixed")
+          .transition()
+          .duration(500)
+          .style("opacity", 0);
       }
     } else {
       if (step_num == 0) {
-        d3.select("#g-spacer")
+        d3.select("#g-heading")
           .transition()
           .duration(250)
           .style("opacity", 0);
@@ -173,12 +173,28 @@ export default class {
       this.vid.play();
     }
   }
+  resetVideo() {
+    $(".scroll-steps")
+      .removeClass("g-next")
+      .removeClass("g-prev")
+      .removeClass("g-active");
 
+    $(".g-first").addClass("g-next");
+
+    d3.select("#g-heading")
+      .transition()
+      .duration(250)
+      .style("opacity", 1);
+
+    this.vid.currentTime = 0;
+    this.vid.pause();
+  }
   playStep(el, is_reverse) {
     const step_num = el.data("step");
     const start_time = el.data("start");
     const end_time = el.data("end");
     this.update(step_num, start_time, end_time, is_reverse);
+    console.log({ step_num, start_time, end_time, is_reverse });
     this.updatePrevNext(el);
   }
 
@@ -228,6 +244,7 @@ export default class {
   }
 
   onScroll(ypos) {
+    console.log("onScroll", ypos);
     const top_of_first_step_div =
       +this.steps.first_step_div.offset().top - ypos;
     const nextEl = $(".g-next").length;
@@ -264,13 +281,18 @@ export default class {
     }
 
     if (top_of_next && top_of_next <= this.scroll_trigger) {
+      console.log("firstIf");
       // console.log("next has hit bottom");
       this.playStep($(".g-next"), false);
     }
 
     if (bottom_of_prev && bottom_of_prev >= this.top_offset) {
+      console.log("secondIf");
       // console.log("prev has hit top");
       this.playStep($(".g-prev"), true);
+    }
+    if (ypos === 0) {
+      this.resetVideo();
     }
     this.scrollIndicator.update(this.getActiveElement());
   }
