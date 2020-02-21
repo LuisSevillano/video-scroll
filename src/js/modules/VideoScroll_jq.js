@@ -1,27 +1,40 @@
-import ScrollIndicator from "./scroll-indicator";
+import ScrollIndicator from "./ScrollIndicator";
+import { csv } from "d3-request";
 export default class {
   constructor(options) {
     this.name = "VideoScroll";
     this.el = document.querySelector("#g-scroll-vid");
     this.vid = this.el.querySelector("#g-vid");
-    this.top_offset = 0;
+    this.stepSelector = ".scroll-step";
+    this.steps;
     this.width = window.innerWidth;
     this.height = window.innerHeight;
     this.scroll_trigger = this.height;
+    this.top_offset = 0;
     this.endTime = 0;
-    this.options = options;
-    this.stepSelector = ".scroll-step";
-    this.steps;
-    if (this.setOptions) this.setOptions(options);
-    else this.options = options || {};
+    this.setOptions(options);
     console.log(this);
   }
 
+  setOptions(opts) {
+    Object.keys(opts).forEach(opt => {
+      this[opt] = opts[opt];
+    }, this);
+  }
+
   init() {
+    //configuration from file is not loaded
+    if (this.configFile && !this.data) {
+      this.loadConfiguration();
+      return;
+    }
+
+    this.handleErrors();
+
     this.steps = {
       first_step_div: $(".scroll-steps .g-first"),
       last_step_div: $(".scroll-steps .g-last"),
-      all: $(".scroll-step")
+      all: $(this.stepSelector)
     };
 
     if (this.width > this.height) {
@@ -41,7 +54,10 @@ export default class {
       this.timeUpdate();
     };
 
-    this.scrollIndicator = new ScrollIndicator({});
+    this.scrollIndicator = new ScrollIndicator({
+      animDuration: this.animDuration,
+      scrollOffset: this.scrollOffset
+    });
     this.scrollIndicator.init();
 
     this.setStepsHeight();
@@ -52,51 +68,6 @@ export default class {
     if (this.isStarted()) {
       this.playStep($(".g-active"), false);
     }
-  }
-
-  bindEvents() {
-    window.addEventListener(
-      "scroll",
-      function(e) {
-        const wScrollTop =
-          (document.documentElement && document.documentElement.scrollTop) ||
-          document.body.scrollTop;
-        this.onScroll(wScrollTop);
-      }.bind(this),
-      false
-    );
-
-    window.addEventListener(
-      "resize",
-      function() {
-        this.updateSizes();
-      }.bind(this),
-      false
-    );
-  }
-
-  updateSizes() {
-    this.width = window.innerWidth;
-    this.height = window.innerHeight;
-    this.scroll_trigger = this.height;
-    if (this.width > this.height) {
-      if (this.height / this.width >= 0.65) {
-        // portrait / mobile
-        console.log("med");
-      } else {
-        // landscape / desktop
-        console.log("desktop");
-      }
-    } else {
-      // portrait / mobile
-      console.log("mobile");
-    }
-  }
-
-  setStepsHeight() {
-    this.el.querySelectorAll(this.stepSelector).forEach(el => {
-      el.style.marginBottom = `${window.innerHeight - this.top_offset}px`;
-    }, this);
   }
 
   timeUpdate() {
@@ -173,6 +144,7 @@ export default class {
       this.vid.play();
     }
   }
+
   resetVideo() {
     $(".scroll-steps")
       .removeClass("g-next")
@@ -189,38 +161,13 @@ export default class {
     this.vid.currentTime = 0;
     this.vid.pause();
   }
+
   playStep(el, is_reverse) {
     const step_num = el.data("step");
     const start_time = el.data("start");
     const end_time = el.data("end");
     this.update(step_num, start_time, end_time, is_reverse);
-    console.log({ step_num, start_time, end_time, is_reverse });
     this.updatePrevNext(el);
-  }
-
-  addClass(el, className) {
-    // console.log("addClass");
-    el.classList.add(className);
-  }
-
-  removeClass(el, className) {
-    // console.log("removeClass");
-    el.classList.remove(className);
-  }
-
-  removeClassMany(elements, className) {
-    if (Array.isArray(className)) {
-      elements.forEach((el, i) => {
-        className.forEach(cName => {
-          this.removeClass(el, cName);
-        }, this);
-      }, this);
-    } else {
-      elements.forEach((el, i) => {
-        this.removeClass(el, className);
-      }, this);
-    }
-    // console.log("removeClassMany");
   }
 
   updatePrevNext(el) {
@@ -244,7 +191,6 @@ export default class {
   }
 
   onScroll(ypos) {
-    console.log("onScroll", ypos);
     const top_of_first_step_div =
       +this.steps.first_step_div.offset().top - ypos;
     const nextEl = $(".g-next").length;
@@ -281,13 +227,11 @@ export default class {
     }
 
     if (top_of_next && top_of_next <= this.scroll_trigger) {
-      console.log("firstIf");
       // console.log("next has hit bottom");
       this.playStep($(".g-next"), false);
     }
 
     if (bottom_of_prev && bottom_of_prev >= this.top_offset) {
-      console.log("secondIf");
       // console.log("prev has hit top");
       this.playStep($(".g-prev"), true);
     }
@@ -295,6 +239,119 @@ export default class {
       this.resetVideo();
     }
     this.scrollIndicator.update(this.getActiveElement());
+  }
+
+  loadConfiguration() {
+    csv(this.configFile, (error, data) => {
+      if (error) throw error;
+      this.data = data;
+      this.setup();
+      delete this.configFile;
+    });
+  }
+
+  setup() {
+    let stepsEl = this.el.querySelector("#scroll-steps");
+    // remove steps element if it exists
+    if (stepsEl) {
+      stepsEl.parentNode.removeChild(stepsEl);
+    }
+    // create it
+    stepsEl = document.createElement("div");
+    stepsEl.setAttribute("id", "scroll-steps");
+    stepsEl.classList.add("scroll-steps");
+
+    // Create every step with its attrs
+    this.data.forEach((step, i) => {
+      const el = document.createElement("div");
+      el.classList.add("scroll-step");
+      this.setDataAttrs(el, step, i);
+      el.innerHTML = step.texto;
+      if (this.bulletIndicator) {
+        el.classList.add("scroll-indicator");
+      }
+      if (i === 0) {
+        el.classList.add("g-first");
+      }
+      if (step.posicion) {
+        el.classList.add(this.getAlignClass(step.posicion));
+      }
+      stepsEl.append(el);
+    }, this);
+
+    this.el.append(stepsEl);
+    this.createGhostSteps(stepsEl);
+    this.init();
+  }
+
+  setDataAttrs(el, step, i) {
+    el.dataset.step = i;
+    el.dataset.start = step.inicio;
+    el.dataset.end = step.final;
+  }
+
+  getAlignClass(str) {
+    const classes = {
+      izquierda: "scroll-step-left",
+      derecha: "scroll-step-right",
+      centro: "scroll-step-center"
+    };
+    return classes[str];
+  }
+
+  createGhostSteps(steps) {
+    const firstEl = document.createElement("div");
+    firstEl.classList.add("scroll-step", "g-ghost-step");
+    const secondEl = document.createElement("div");
+    secondEl.classList.add("scroll-step", "g-last", "g-ghost-step");
+
+    steps.insertBefore(firstEl, steps.childNodes[0]);
+    steps.insertBefore(secondEl, steps.childNodes[steps.childNodes.length]);
+  }
+
+  bindEvents() {
+    window.addEventListener(
+      "scroll",
+      function(e) {
+        const wScrollTop =
+          (document.documentElement && document.documentElement.scrollTop) ||
+          document.body.scrollTop;
+        this.onScroll(wScrollTop);
+      }.bind(this),
+      false
+    );
+
+    window.addEventListener(
+      "resize",
+      function() {
+        this.updateSizes();
+      }.bind(this),
+      false
+    );
+  }
+
+  updateSizes() {
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
+    this.scroll_trigger = this.height;
+    if (this.width > this.height) {
+      if (this.height / this.width >= 0.65) {
+        // portrait / mobile
+        console.log("med");
+      } else {
+        // landscape / desktop
+        console.log("desktop");
+      }
+    } else {
+      // portrait / mobile
+      console.log("mobile");
+    }
+  }
+
+  setStepsHeight() {
+    this.el.querySelectorAll(this.stepSelector).forEach(el => {
+      el.style.marginBottom = `${window.innerHeight - this.top_offset}px`;
+    }, this);
   }
 
   isStarted() {
@@ -352,5 +409,50 @@ export default class {
     return (
       height - borderBottomWidth - borderTopWidth - paddingTop - paddingBottom
     );
+  }
+  handleErrors() {
+    if (!this.el.querySelector("#scroll-steps")) {
+      console.error("Error", "No existe el elemento #scroll-steps");
+    }
+
+    const dataAttrsOK = Array.from(
+      this.el.querySelectorAll(".scroll-step")
+    ).every(el => {
+      if (!el.classList.contains("g-ghost-step") && !el.dataset.step) {
+        return false;
+      }
+      return true;
+    });
+    if (!dataAttrsOK) {
+      console.error(
+        "Error",
+        "Alguno de los elementos que conforman las cartelas no tiene los atributos 'data' necesarios"
+      );
+    }
+  }
+
+  addClass(el, className) {
+    // console.log("addClass");
+    el.classList.add(className);
+  }
+
+  removeClass(el, className) {
+    // console.log("removeClass");
+    el.classList.remove(className);
+  }
+
+  removeClassMany(elements, className) {
+    if (Array.isArray(className)) {
+      elements.forEach((el, i) => {
+        className.forEach(cName => {
+          this.removeClass(el, cName);
+        }, this);
+      }, this);
+    } else {
+      elements.forEach((el, i) => {
+        this.removeClass(el, className);
+      }, this);
+    }
+    // console.log("removeClassMany");
   }
 }

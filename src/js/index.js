@@ -6,5 +6,9 @@ import css from "../css/main.css";
 import VideoScroll from "./modules/VideoScroll_jq";
 
 new VideoScroll({
-  // stepSelector: ".scroll-step"
+  stepSelector: ".scroll-step",
+  scrollOffset: -30,
+  animDuration: 750,
+  configFile: "config.csv",
+  bulletIndicator: true
 }).init();
