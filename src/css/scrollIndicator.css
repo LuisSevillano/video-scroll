@@ -1,0 +1,21 @@
+#scroll-indicator-container {
+  position: fixed;
+  top: 50%;
+  transform: translate(0, -50%);
+  right: 15px;
+  /* border: 1px solid black; */
+  width: 10px;
+
+  .scroll-indicator-dot {
+    cursor: pointer;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    background-color: rgb(240, 240, 240);
+    text-align: center;
+    &.active {
+      background-color: rgb(100, 100, 100);
+    }
+  }
+}
