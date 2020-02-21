@@ -1,7 +1,11 @@
 #scroll-steps {
+  pointer-events: none;
   font-family: sans-serif;
   position: relative;
   z-index: 10;
+  @media (min-width: 600px) {
+    padding: 0 30px;
+  }
   .scroll-step {
     padding: 15px;
     background: rgb(255, 255, 255, 1);
@@ -16,10 +20,11 @@
     &.scroll-step-left {
     }
     &.scroll-step-right {
+      margin-left: auto;
     }
     @media (min-width: 600px) {
       max-width: none;
-      width: 300px;
+      width: 400px;
     }
     &:last-child {
       margin-bottom: 0;

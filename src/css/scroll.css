@@ -1,4 +1,14 @@
 #g-scroll-vid {
+  h1 {
+    color: #f4f4f4 !important;
+    position: absolute;
+    top: 50%;
+    text-shadow: 0px 1px 3px #211d1a, 1px 0px 3px #211d1a, -1px -1px 3px #211d1a,
+      -1px 0px 3px #211d1a;
+    font-family: "Frank Ruhl Libre", serif;
+    font-size: 3em;
+    text-align: center;
+  }
   #g-fixed {
     position: fixed;
     top: 0;
