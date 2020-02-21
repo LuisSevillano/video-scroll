@@ -5,9 +5,17 @@ export default class {
     this.el = this.parent.querySelector("#scroll-indicator-container");
     this.animDuration = 750;
     this.scrollOffset = -30;
+    this.setOptions(options);
+  }
+
+  setOptions(opts) {
+    Object.keys(opts).forEach(opt => {
+      this[opt] = opts[opt];
+    }, this);
   }
 
   init() {
+    console.log(this);
     if (!this.el) {
       const el = document.createElement("div");
       el.setAttribute("id", "scroll-indicator-container");
