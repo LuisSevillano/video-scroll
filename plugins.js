@@ -9,7 +9,5 @@ module.exports = {
   IndexPage: new HtmlWebpackPlugin({
     template: "src/index.html"
   }),
-  CopyPlugin: new CopyPlugin([
-    // { from: 'data/data.tsv', to: '' },
-  ])
+  CopyPlugin: new CopyPlugin([{ from: "video", to: "" }])
 };
