@@ -3,7 +3,7 @@ export default class {
     this.parent = document.querySelector("#g-scroll-vid");
     this.steps = this.parent.querySelectorAll(".scroll-indicator");
     this.el = this.parent.querySelector("#scroll-indicator-container");
-    this.animDuration = 500;
+    this.animDuration = 750;
     this.scrollOffset = -30;
   }
 

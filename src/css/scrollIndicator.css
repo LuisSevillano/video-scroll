@@ -2,7 +2,10 @@
   position: fixed;
   top: 50%;
   transform: translate(0, -50%);
-  right: 15px;
+  right: 5px;
+  @media (min-width: 600px) {
+    right: 10px;
+  }
   /* border: 1px solid black; */
   width: 10px;
 
@@ -12,10 +15,11 @@
     border-radius: 50%;
     width: 10px;
     height: 10px;
-    background-color: rgb(240, 240, 240);
+    background-color: rgb(220, 220, 220);
     text-align: center;
     &.active {
       background-color: rgb(100, 100, 100);
+      border: 1px solid white;
     }
   }
 }
