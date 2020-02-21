@@ -1,3 +1,4 @@
+import ScrollIndicator from "./scroll-indicator";
 export default class {
   constructor(options) {
     this.name = "VideoScroll";
@@ -39,6 +40,9 @@ export default class {
     this.vid.ontimeupdate = () => {
       this.timeUpdate();
     };
+
+    this.scrollIndicator = new ScrollIndicator({});
+    this.scrollIndicator.init();
 
     this.setStepsHeight();
     this.setActiveElement();
@@ -110,10 +114,9 @@ export default class {
   loadVideo(size) {
     let vid_class;
     let vid_att = "";
-    console.log(size);
     if (size == "mobile") {
       vid_class = "g-vid-mobile";
-      // vid_att = "_mobile";
+      vid_att = "_mobile";
     } else if (size == "med") {
       // vid_class = "g-vid-med";
       vid_class = "g-vid-med";
@@ -136,7 +139,6 @@ export default class {
   }
 
   update(step_num, start_time, end_time, is_reverse) {
-    console.log(step_num);
     if (step_num !== 0 && !step_num) {
       $(".scroll-steps")
         .removeClass("g-next")
@@ -150,10 +152,10 @@ export default class {
           .duration(250)
           .style("opacity", 1);
       } else {
-        d3.select("#g-fixed")
-          .transition()
-          .duration(500)
-          .style("opacity", 0);
+        // d3.select("#g-fixed")
+        //   .transition()
+        //   .duration(500)
+        //   .style("opacity", 0);
       }
     } else {
       if (step_num == 0) {
@@ -173,11 +175,9 @@ export default class {
   }
 
   playStep(el, is_reverse) {
-    console.log("playStep", el);
     const step_num = el.data("step");
     const start_time = el.data("start");
     const end_time = el.data("end");
-    console.log({ step_num, start_time, end_time, is_reverse });
     this.update(step_num, start_time, end_time, is_reverse);
     this.updatePrevNext(el);
   }
@@ -272,6 +272,7 @@ export default class {
       // console.log("prev has hit top");
       this.playStep($(".g-prev"), true);
     }
+    this.scrollIndicator.update(this.getActiveElement());
   }
 
   isStarted() {
@@ -283,11 +284,13 @@ export default class {
   }
 
   getActiveElement() {
+    let activeEl;
     this.steps.all.each((i, el) => {
       if (this.inViewport(el)) {
-        return el;
+        activeEl = el;
       }
     }, this);
+    return activeEl;
   }
 
   setActiveElement() {
