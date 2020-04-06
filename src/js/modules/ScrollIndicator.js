@@ -16,7 +16,6 @@ export default class {
   }
 
   init() {
-    console.log(this);
     if (!this.el) {
       const el = document.createElement("div");
       el.setAttribute("id", "scroll-indicator-container");

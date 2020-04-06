@@ -1,5 +1,7 @@
 import ScrollIndicator from "./ScrollIndicator";
 import { csv } from "d3-request";
+import { select } from "d3-selection";
+import { transition } from "d3-transition";
 export default class {
   constructor(options) {
     this.name = "VideoScroll";
@@ -13,7 +15,7 @@ export default class {
     this.top_offset = 0;
     this.endTime = 0;
     this.setOptions(options);
-    console.log(this);
+    // console.log(this);
   }
 
   setOptions(opts) {
@@ -93,7 +95,7 @@ export default class {
       vid_class = "g-vid-med";
       // vid_att = "_mobile";
       // vid_att = "_med";
-      // d3.select("#g-fade").style("display","block").style("bottom",`${$("#g-vid").height()}px`)
+      // select("#g-fade").style("display","block").style("bottom",`${$("#g-vid").height()}px`)
     } else if (size == "desktop") {
       vid_class = "g-vid-desktop";
     }
@@ -118,24 +120,24 @@ export default class {
       if (is_reverse) {
         this.vid.currentTime = 0;
         this.vid.pause();
-        d3.select("#g-heading")
+        select("#g-heading")
           .transition()
           .duration(250)
           .style("opacity", 1);
       } else {
-        d3.select("#g-fixed")
+        select("#g-fixed")
           .transition()
           .duration(500)
           .style("opacity", 0);
       }
     } else {
       if (step_num == 0) {
-        d3.select("#g-heading")
+        select("#g-heading")
           .transition()
           .duration(250)
           .style("opacity", 0);
       }
-      d3.select("#g-fixed")
+      select("#g-fixed")
         .transition()
         .duration(250)
         .style("opacity", 1);
@@ -153,7 +155,7 @@ export default class {
 
     $(".g-first").addClass("g-next");
 
-    d3.select("#g-heading")
+    select("#g-heading")
       .transition()
       .duration(250)
       .style("opacity", 1);
@@ -337,14 +339,14 @@ export default class {
     if (this.width > this.height) {
       if (this.height / this.width >= 0.65) {
         // portrait / mobile
-        console.log("med");
+        // console.log("med");
       } else {
         // landscape / desktop
-        console.log("desktop");
+        // console.log("desktop");
       }
     } else {
       // portrait / mobile
-      console.log("mobile");
+      // console.log("mobile");
     }
   }
 

@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const loaders = require("./loaders");
 const plugins = require("./plugins");
+console.log(webpack);
 
 const devMode = process.env.NODE_ENV !== "production";
 
@@ -25,7 +26,11 @@ module.exports = {
   plugins: [
     plugins.MiniCssExtractPlugin,
     plugins.IndexPage,
-    plugins.CopyPlugin
+    plugins.CopyPlugin,
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery"
+    })
   ],
   module: {
     rules: [loaders.JSLoader, loaders.CSSLoader]
