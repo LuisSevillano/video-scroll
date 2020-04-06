@@ -4,5 +4,5 @@
 require("../css/main.css").default;
 // import WorldAnimatedMap from "./modules/WorldAnimatedMap";
 // module.exports = WorldAnimatedMap;
-const VideoScroll = require("./modules/VideoScroll_jq").default;
+const VideoScroll = require("./modules/VideoScroll").default;
 module.exports = VideoScroll;
