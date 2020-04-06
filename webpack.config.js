@@ -11,6 +11,7 @@ const devMode = process.env.NODE_ENV !== "production";
 module.exports = {
   entry: "./src/js/index",
   output: {
+    library: "VideoScroll",
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist")
   },
