@@ -1,3 +1,4 @@
+// Draw dots on the right side of the page
 export default class {
   constructor(options) {
     this.parent = document.querySelector("#g-scroll-vid");

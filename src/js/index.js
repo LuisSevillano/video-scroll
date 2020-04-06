@@ -1,14 +1,8 @@
 /* eslint no-console: ["error", { allow: ["log"] }] */
-
 /* eslint func-names: ["error", "never"] */
 /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: true}}] */
-import css from "../css/main.css";
-import VideoScroll from "./modules/VideoScroll_jq";
-
-new VideoScroll({
-  stepSelector: ".scroll-step",
-  scrollOffset: -30,
-  animDuration: 750,
-  configFile: "config.csv",
-  bulletIndicator: true
-}).init();
+require("../css/main.css").default;
+// import WorldAnimatedMap from "./modules/WorldAnimatedMap";
+// module.exports = WorldAnimatedMap;
+const VideoScroll = require("./modules/VideoScroll_jq").default;
+module.exports = VideoScroll;

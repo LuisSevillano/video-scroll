@@ -22,22 +22,22 @@
     <div id="scroll-steps" class='scroll-steps'>
       <div class="scroll-step g-ghost-step"></div>
 
-      <div class="scroll-indicator scroll-step scroll-step-left g-first" data-step="0" data-start="0" data-end="1">
+      <div class="scroll-indicator scroll-step scroll-step-left g-first" data-step="0">
         <p class="step-content"><b>1</b> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
           ex ea
           commodo consequat.</p>
       </div>
-      <div class="scroll-indicator scroll-step scroll-step-right " data-step="1" data-start="1" data-end="2.22">
+      <div class="scroll-indicator scroll-step scroll-step-right " data-step="1">
         <p class="step-content"><b>2</b> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
           ex ea
           commodo consequat</p>
       </div>
-      <div class="scroll-indicator scroll-step scroll-step-left " data-step="2" data-start="2.22" data-end="4.16">
+      <div class="scroll-indicator scroll-step scroll-step-left " data-step="2">
         <p class="step-content"><b>3</b> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
           ex ea
           commodo consequat</p>
       </div>
-      <div class="scroll-indicator scroll-step scroll-step-center " data-step="3" data-start="4.16" data-end="6">
+      <div class="scroll-indicator scroll-step scroll-step-center " data-step="3">
         <p class="step-content"><b>4</b> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
           ex ea
           commodo consequat</p>
@@ -46,6 +46,19 @@
       <div class="scroll-step g-last g-ghost-step"></div>
     </div>
   </div>
+  <script type="text/javascript">
+    (function() {
+      document.addEventListener("DOMContentLoaded", function(event) {
+        new VideoScroll({
+          stepSelector: ".scroll-step",
+          scrollOffset: -30,
+          animDuration: 750,
+          configFile: "config.csv",
+          bulletIndicator: true
+        }).init();
+      });
+    })();
+  </script>
 </body>
 
 </html>

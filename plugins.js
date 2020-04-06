@@ -9,5 +9,7 @@ module.exports = {
   IndexPage: new HtmlWebpackPlugin({
     template: "src/index.html"
   }),
-  CopyPlugin: new CopyPlugin([{ from: "video", to: "" }])
+  CopyPlugin: new CopyPlugin([
+    { from: "video", to: "", test: "/a_coruna_simple_*.mp4/" }
+  ])
 };
